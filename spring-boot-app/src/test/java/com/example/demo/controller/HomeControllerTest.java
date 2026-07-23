@@ -1,3 +1,5 @@
+package com.example.demo.controller;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,7 +26,6 @@ public class HomeControllerTest {
     public void testHomePage() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("home"))
-                .andExpect(model().attributeExists("attributeName")); // Replace with actual attribute name if needed
+                .andExpect(view().name("home"));
     }
 }
