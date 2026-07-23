@@ -2,15 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Maven Build') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Maven build') {
-            steps {
-                sh 'mvn clean package'
+                bat 'mvn clean package'
             }
         }
     }
