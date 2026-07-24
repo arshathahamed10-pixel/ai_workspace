@@ -9,6 +9,7 @@ pipeline {
     environment {
         GIT_REPO_URL = 'https://github.com/arshathahamed10-pixel/ai_workspace.git'
         GIT_BRANCH   = 'dev'
+        APP_DIR      = 'spring-boot-app'
     }
 
     stages {
@@ -21,9 +22,11 @@ pipeline {
             }
         }
 
-        stage('Build') {
+         stage('Build') {
             steps {
-                bat 'mvn clean package -DskipTests'
+                dir("${APP_DIR}") {
+                    bat 'mvn clean package -DskipTests'
+                }
             }
         }
         
