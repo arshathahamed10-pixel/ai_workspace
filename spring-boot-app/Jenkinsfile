@@ -29,6 +29,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Test') {
+            steps {
+                dir("${APP_DIR}") {
+                    bat 'mvn test'
+                }
+            }
+            post {
+                always {
+                    junit "${APP_DIR}/target/surefire-reports/*.xml"
+                }
+            }
+        }
+
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: "${APP_DIR}/target/*.jar", fingerprint: true
+            }
+        }
         
     }
 
