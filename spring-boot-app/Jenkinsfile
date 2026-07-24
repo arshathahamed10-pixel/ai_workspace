@@ -2,32 +2,28 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'
-        jdk 'Jdk17'
+        maven 'Maven'   // Name of Maven installation configured in Jenkins Global Tool Config
+        jdk 'Jdk17'      // Name of JDK installation configured in Jenkins Global Tool Config
     }
 
     environment {
-        APP_NAME = "spring-boot-app"
+        GIT_REPO_URL = 'https://github.com/arshathahamed10-pixel/ai_workspace.git'
+        GIT_BRANCH   = 'dev'
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                echo "Checking out source code..."
-                checkout scm
+                git branch: "${GIT_BRANCH}",
+                    url: "${GIT_REPO_URL}",
+                    credentialsId: 'ARSHATH10'   // Jenkins credential ID for git access
             }
         }
 
-        stage('Clean') {
+        stage('Build') {
             steps {
-                sh 'mvn clean'
-            }
-        }
-
-        stage('Compile') {
-            steps {
-                sh 'mvn compile'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -35,28 +31,26 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
-        }
-
-        stage('Package') {
-            steps {
-                sh 'mvn package -DskipTests'
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
             }
         }
 
-
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
     }
 
     post {
-        always {
-            echo 'Pipeline completed.'
-        }
-
         success {
-            echo 'Build Successful!'
+            echo 'Build completed successfully!'
         }
-
         failure {
-            echo 'Build Failed!'
+            echo 'Build failed!'
         }
     }
 }
