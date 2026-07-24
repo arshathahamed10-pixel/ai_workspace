@@ -3,13 +3,60 @@ pipeline {
 
     tools {
         maven 'Maven'
+        jdk 'Jdk17'
+    }
+
+    environment {
+        APP_NAME = "spring-boot-app"
     }
 
     stages {
-        stage('Maven Build') {
+
+        stage('Checkout') {
             steps {
-                sh 'mvn clean package'
+                echo "Checking out source code..."
+                checkout scm
             }
+        }
+
+        stage('Clean') {
+            steps {
+                sh 'mvn clean'
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package -DskipTests'
+            }
+        }
+
+
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+
+        success {
+            echo 'Build Successful!'
+        }
+
+        failure {
+            echo 'Build Failed!'
         }
     }
 }
