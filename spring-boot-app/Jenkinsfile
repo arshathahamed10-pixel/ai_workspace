@@ -10,6 +10,7 @@ pipeline {
         GIT_REPO_URL = 'https://github.com/arshathahamed10-pixel/ai_workspace.git'
         GIT_BRANCH   = 'dev'
         APP_DIR      = 'spring-boot-app'
+        DC_CHECK     = 'C:\\Program Files\\dependency-check'
         PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;${env.PATH}"
     }
 
@@ -44,6 +45,19 @@ pipeline {
                     bat 'grype dir:. -o json --file grype-report.json'
                     bat 'grype dir:. -o table'
                 }
+            }
+        }
+
+          stage('Dependency Check') {
+            steps {
+                   bat """
+                    "%DC_CHECK%\\bin\\dependency-check.bat" ^
+                      --project "spring-boot-app" ^
+                      --scan . ^
+                      --format HTML ^
+                      --format XML ^
+                      --out dependency-check-report
+                    """
             }
         }
         
