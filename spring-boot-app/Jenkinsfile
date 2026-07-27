@@ -30,11 +30,25 @@ pipeline {
             }
         }
 
-         stage('Grype Vulnerability Scan') {
+            stage('Verify Grype Installed') {
+            steps {
+                bat 'grype version'
+            }
+        }
+
+        stage('Grype Vulnerability Scan') {
             steps {
                 dir("${APP_DIR}") {
-                    powershell 'grype db update'
-                    powershell 'grype dir:. -o json > grype-report.json'
+                    bat 'grype db update'
+
+                    // Generate JSON report (does not fail build by itself)
+                    bat 'grype dir:. -o json --file grype-report.json'
+
+                    // Human-readable table output in console log
+                    bat 'grype dir:. -o table'
+
+                    // Enforce failure threshold — fails build if vulns >= GRYPE_FAIL_ON severity
+                    bat "grype dir:. --fail-on %GRYPE_FAIL_ON%"
                 }
             }
         }
