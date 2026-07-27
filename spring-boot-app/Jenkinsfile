@@ -55,11 +55,7 @@ pipeline {
             bat 'grype dir:. -o json > grype-report.json'
         }
     }
-    post {
-        always {
-            archiveArtifacts artifacts: "${APP_DIR}/grype-report.json", fingerprint: true
-        }
-    }
+  
 }
         
     }
