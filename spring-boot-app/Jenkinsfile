@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-            stage('Verify Grype Installed') {
+        stage('Verify Grype Installed') {
             steps {
                 bat 'grype version'
             }
