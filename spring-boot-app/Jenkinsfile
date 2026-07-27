@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         GIT_REPO_URL = 'https://github.com/arshathahamed10-pixel/ai_workspace.git'
-        GIT_BRANCH   = 'dev'
+        GIT_BRANCH   = 'master'
         APP_DIR      = 'spring-boot-app'
     }
 
