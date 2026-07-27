@@ -36,6 +36,16 @@ pipeline {
                 bat 'grype version'
             }
         }
+
+          stage('Grype Vulnerability Scan') {
+            steps {
+                dir("${APP_DIR}") {
+                    bat 'grype db update'
+                    bat 'grype dir:. -o json --file grype-report.json'
+                    bat 'grype dir:. -o table'
+                }
+            }
+        }
         
     }
 
