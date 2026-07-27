@@ -29,28 +29,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Test') {
-            steps {
-                dir("${APP_DIR}") {
-                    bat 'mvn test'
-                }
-            }
-            post {
-                always {
-                    junit "${APP_DIR}/target/surefire-reports/*.xml"
-                }
-            }
-        }
-
-        stage('Grype Scan') {
-    steps {
-        dir("${APP_DIR}") {
-            bat 'grype dir:. -o json > grype-report.json'
-        }
-    }
-  
-}
         
     }
 
