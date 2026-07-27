@@ -43,12 +43,6 @@ pipeline {
             }
         }
 
-        stage('Archive Artifact') {
-            steps {
-                archiveArtifacts artifacts: "${APP_DIR}/target/*.jar", fingerprint: true
-            }
-        }
-
         stage('Grype Scan') {
     steps {
         dir("${APP_DIR}") {
