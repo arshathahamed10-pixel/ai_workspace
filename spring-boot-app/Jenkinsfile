@@ -29,6 +29,12 @@ pipeline {
                 }
             }
         }
+
+        stage('Verify Grype Installed') {
+            steps {
+                bat 'grype version'
+            }
+        }
         
     }
 
