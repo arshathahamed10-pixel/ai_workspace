@@ -3,7 +3,8 @@ pipeline {
 
     tools {
         maven 'Maven'   // Name of Maven installation configured in Jenkins Global Tool Config
-        jdk 'Jdk17'      // Name of JDK installation configured in Jenkins Global Tool Config
+        jdk 'Jdk17'  
+           dependencyCheck 'CVC scanner'
     }
 
     environment {
@@ -48,16 +49,20 @@ pipeline {
             }
         }
 
-          stage('Dependency Check') {
+         stage('OWASP Dependency-Check') {
             steps {
-                   bat """
-                    "%DC_CHECK%\\bin\\dependency-check.bat" ^
-                      --project "spring-boot-app" ^
-                      --scan . ^
-                      --format HTML ^
-                      --format XML ^
-                      --out dependency-check-report
-                    """
+                dependencyCheck additionalArguments: '''
+                    -o "./"
+                    -s "./"
+                    -f "ALL"
+                    --prettyPrint
+                ''', odcInstallation: 'CVC scanner'
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
         
