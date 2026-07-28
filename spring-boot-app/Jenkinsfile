@@ -8,8 +8,9 @@ pipeline {
 
     environment {
         GIT_REPO_URL = 'https://github.com/arshathahamed10-pixel/ai_workspace.git'
-        GIT_BRANCH   = 'dev'
+        GIT_BRANCH   = 'master'
         APP_DIR      = 'spring-boot-app'
+        PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;${env.PATH}"
     }
 
     stages {
@@ -26,6 +27,22 @@ pipeline {
             steps {
                 dir("${APP_DIR}") {
                     bat 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Verify Grype Installed') {
+            steps {
+                bat 'grype version'
+            }
+        }
+
+          stage('Grype Vulnerability Scan') {
+            steps {
+                dir("${APP_DIR}") {
+                    bat 'grype db update'
+                    bat 'grype dir:. -o json --file grype-report.json'
+                    bat 'grype dir:. -o table'
                 }
             }
         }
