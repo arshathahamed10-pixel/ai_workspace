@@ -12,6 +12,7 @@ pipeline {
         APP_DIR      = 'spring-boot-app'
         DC_CHECK     = 'C:\\Program Files\\dependency-check'
         PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;${env.PATH}"
+        NVD_API_KEY = credentials('NVDAPI')
     }
 
     stages {
@@ -55,6 +56,7 @@ pipeline {
                     -s "./"
                     -f "ALL"
                     --prettyPrint
+                    --nvdApiKey ${NVD_API_KEY}
                 ''', odcInstallation: 'CVC scanner'
             }
         }
