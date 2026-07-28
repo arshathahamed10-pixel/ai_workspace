@@ -35,7 +35,7 @@ pipeline {
             steps {
                 dir("${APP_DIR}") {
                     bat 'grype db update'
-                    bat 'grype dir:. -o html --file grype-report.html'
+                    bat 'grype dir:. -o grype-html.tmpl https://raw.githubusercontent.com/anchore/grype/main/templates/html.tmpl --file grype-report.html'
                 }
             }
         }
