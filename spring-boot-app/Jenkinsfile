@@ -45,6 +45,7 @@ pipeline {
                     bat 'grype db update'
                     bat 'grype dir:. -o json --file grype-report.json'
                     bat 'grype dir:. -o table'
+                    bat 'grype dir:. -o html --file grype-report.html'
                 }
             }
         }
