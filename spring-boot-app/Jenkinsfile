@@ -10,7 +10,8 @@ pipeline {
         GIT_REPO_URL = 'https://github.com/arshathahamed10-pixel/ai_workspace.git'
         GIT_BRANCH   = 'test'
         APP_DIR      = 'spring-boot-app'
-        PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;C:\\Program Files\\template;${env.PATH}"
+        PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;${env.PATH}"
+        TEMPLATE     = "C:\\Program Files\\template\\grype-html.tmpl"
     }
 
     stages {
@@ -35,7 +36,7 @@ pipeline {
             steps {
                 dir("${APP_DIR}") {
                     bat 'grype db update'
-                    bat 'grype dir:. -o template -t grype-html.tmpl > grype-report.html'
+                    bat "grype dir:. -o template -t \"${TEMPLATE}\" > grype-report.html"
                 }
             }
         }
