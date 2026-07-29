@@ -10,7 +10,7 @@ pipeline {
         GIT_REPO_URL = 'https://github.com/arshathahamed10-pixel/ai_workspace.git'
         GIT_BRANCH   = 'test'
         APP_DIR      = 'spring-boot-app'
-        PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;${env.PATH}"
+        PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;C:\\Program Files\\template;${env.PATH}"
     }
 
     stages {
@@ -35,8 +35,21 @@ pipeline {
             steps {
                 dir("${APP_DIR}") {
                     bat 'grype db update'
-                    bat 'grype dir:. -o grype-html.tmpl https://raw.githubusercontent.com/anchore/grype/main/templates/html.tmpl --file grype-report.html'
+                    bat 'grype dir:. -o template -t grype-html.tmpl > grype-report.html'
                 }
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
+                publishHTML(target: [
+                    reportName: 'Grype Vulnerability Report',
+                    reportDir: '.',
+                    reportFiles: 'grype-report.html',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
             }
         }
         
