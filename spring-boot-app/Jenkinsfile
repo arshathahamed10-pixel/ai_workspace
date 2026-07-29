@@ -44,16 +44,17 @@ pipeline {
        stage('Publish Report') {
         steps {
             dir("${APP_DIR}") {
-                archiveArtifacts artifacts: 'grype-report.html', fingerprint: true
+                  zip zipFile: 'grype-report.zip', archive: false, dir: '.', glob: 'grype-report.html'
+                  archiveArtifacts artifacts: 'grype-report.zip', fingerprint: true
             }
-            publishHTML(target: [
-                reportName: 'Grype Vulnerability Report',
-                reportDir: "${APP_DIR}",
-                reportFiles: 'grype-report.html',
-                keepAll: true,
-                alwaysLinkToLastBuild: true,
-                allowMissing: false
-            ])
+            // publishHTML(target: [
+            //     reportName: 'Grype Vulnerability Report',
+            //     reportDir: "${APP_DIR}",
+            //     reportFiles: 'grype-report.html',
+            //     keepAll: true,
+            //     alwaysLinkToLastBuild: true,
+            //     allowMissing: false
+            // ])
         }
     }
         
