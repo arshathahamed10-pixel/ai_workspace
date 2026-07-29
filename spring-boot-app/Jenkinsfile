@@ -11,7 +11,7 @@ pipeline {
         GIT_BRANCH   = 'test'
         APP_DIR      = 'spring-boot-app'
         PATH = "C:\\Program Files\\grype_0.116.0_windows_amd64;${env.PATH}"
-        TEMPLATE     = "C:\\Program Files\\template\\grype-html.tmpl"
+        TEMPLATE     = "C:\\Program Files\\template\\html.tmpl"
     }
 
     stages {
