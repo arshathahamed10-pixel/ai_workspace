@@ -41,18 +41,21 @@ pipeline {
             }
         }
 
-        // stage('Publish Report') {
-        //     steps {
-        //         publishHTML(target: [
-        //             reportName: 'Grype Vulnerability Report',
-        //             reportDir: "${APP_DIR}",
-        //             reportFiles: 'grype-report.html',
-        //             keepAll: true,
-        //             alwaysLinkToLastBuild: true,
-        //             allowMissing: false
-        //         ])
-        //     }
-        // }
+       stage('Publish Report') {
+        steps {
+            dir("${APP_DIR}") {
+                archiveArtifacts artifacts: 'grype-report.html', fingerprint: true
+            }
+            publishHTML(target: [
+                reportName: 'Grype Vulnerability Report',
+                reportDir: "${APP_DIR}",
+                reportFiles: 'grype-report.html',
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: false
+            ])
+        }
+    }
         
     }
 
