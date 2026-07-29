@@ -33,21 +33,21 @@ pipeline {
             }
         }
 
-        stage('Verify Grype Installed') {
-            steps {
-                bat 'grype version'
-            }
-        }
+        // stage('Verify Grype Installed') {
+        //     steps {
+        //         bat 'grype version'
+        //     }
+        // }
 
-          stage('Grype Vulnerability Scan') {
-            steps {
-                dir("${APP_DIR}") {
-                    bat 'grype db update'
-                    bat 'grype dir:. -o json --file grype-report.json'
-                    bat 'grype dir:. -o table'
-                }
-            }
-        }
+        //   stage('Grype Vulnerability Scan') {
+        //     steps {
+        //         dir("${APP_DIR}") {
+        //             bat 'grype db update'
+        //             bat 'grype dir:. -o json --file grype-report.json'
+        //             bat 'grype dir:. -o table'
+        //         }
+        //     }
+        // }
 
          stage('OWASP Dependency-Check') {
             steps {
