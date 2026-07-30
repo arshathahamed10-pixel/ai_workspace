@@ -52,7 +52,7 @@ pipeline {
 
          stage('OWASP Dependency-Check') {
             steps {
-                bat 'mkdir reports'
+                bat 'mkdir report'
                 dependencyCheck additionalArguments: '''
                     -o "./report"
                     -s "./"
