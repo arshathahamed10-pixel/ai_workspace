@@ -62,12 +62,15 @@ pipeline {
                     --data  ${NVD_DATA_DIR}
                     --noupdate
                 ''', odcInstallation: 'CVC scanner'
+                bat 'cd foldername'
+                bat 'tar -a -c -f ..\report.zip *'
+
             }
         }
         
         stage('Archive Report') {
             steps {
-                archiveArtifacts artifacts: "${APP_DIR}/dependency-check-report-${env.BUILD_NUMBER}.zip",
+                archiveArtifacts artifacts: "${APP_DIR}/report/dependency-check-report-${env.BUILD_NUMBER}.zip",
                                   allowEmptyArchive: false,
                                   fingerprint: true
             }
@@ -87,6 +90,9 @@ pipeline {
     }
 
     post {
+          always {
+            cleanWs()
+        }
         success {
             echo 'Build completed successfully!'
         }
