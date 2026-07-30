@@ -64,11 +64,34 @@ pipeline {
             }
         }
 
-        stage('Publish Report') {
+          stage('Zip Report') {
             steps {
-                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                dir("${APP_DIR}") {
+                    // zip is the built-in Jenkins Pipeline Utility Steps command
+                    zip zipFile: "dependency-check-report-${env.BUILD_NUMBER}.zip",
+                        archive: false,
+                        glob: 'dependency-check-report.*'
+                }
             }
         }
+        stage('Archive Report') {
+            steps {
+                archiveArtifacts artifacts: "${APP_DIR}/dependency-check-report-${env.BUILD_NUMBER}.zip",
+                                  allowEmptyArchive: false,
+                                  fingerprint: true
+            }
+        }
+        stage('Publish Report') {
+            steps {
+                dependencyCheckPublisher pattern: "${APP_DIR}/dependency-check-report.xml"
+            }
+        }
+
+        // stage('Publish Report') {
+        //     steps {
+        //         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+        //     }
+        // }
         
     }
 
