@@ -64,12 +64,10 @@ pipeline {
             }
         }
 
-        stage('Zip Report') {
+       stage('Zip Report') {
             steps {
                 dir("${APP_DIR}") {
-                    powershell """
-                        Compress-Archive -Path dependency-check-report.* -DestinationPath dependency-check-report-${env.BUILD_NUMBER}.zip -Force
-                    """
+                    bat "tar -a -c -f dependency-check-report-${env.BUILD_NUMBER}.zip dependency-check-report.*"
                 }
             }
         }
