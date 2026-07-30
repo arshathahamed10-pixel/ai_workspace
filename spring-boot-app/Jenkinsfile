@@ -66,22 +66,22 @@ pipeline {
 
         stage('Zip Folder') {
             steps {
-                dir("${APP_DIR}/foldername") {
-                    bat "tar -a -c -f ..\\archive.zip *"
+                dir("${APP_DIR}/report") {
+                    bat "tar -a -c -f ..\\report.zip *"
                 }
             }
         }
         
         stage('Archive Report') {
             steps {
-                archiveArtifacts artifacts: "${APP_DIR}/report/dependency-check-report-${env.BUILD_NUMBER}.zip",
+                archiveArtifacts artifacts: "${APP_DIR}/report-${env.BUILD_NUMBER}.zip",
                                   allowEmptyArchive: false,
                                   fingerprint: true
             }
         }
         stage('Publish Report') {
             steps {
-                dependencyCheckPublisher pattern: "${APP_DIR}/dependency-check-report.xml"
+                dependencyCheckPublisher pattern: "${APP_DIR}/report/dependency-check-report.xml"
             }
         }
 
