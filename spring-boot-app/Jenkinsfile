@@ -67,7 +67,7 @@ pipeline {
         stage('Zip Folder') {
             steps {
                 dir("${APP_DIR}/report") {
-                    bat "tar -a -c -f ..\report-${env.BUILD_NUMBER}.zip *"
+                    bat "tar -a -c -f ..\\report-${env.BUILD_NUMBER}.zip *"
                 }
             }
         }
