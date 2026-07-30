@@ -52,7 +52,6 @@ pipeline {
 
          stage('OWASP Dependency-Check') {
             steps {
-                bat 'mkdir report'
                 dependencyCheck additionalArguments: '''
                     -o "./report"
                     -s "./"
@@ -62,9 +61,14 @@ pipeline {
                     --data  ${NVD_DATA_DIR}
                     --noupdate
                 ''', odcInstallation: 'CVC scanner'
-                bat 'cd report'
-                bat 'tar -a -c -f ..\report.zip *'
+            }
+        }
 
+        stage('Zip Folder') {
+            steps {
+                dir("${APP_DIR}/foldername") {
+                    bat "tar -a -c -f ..\\archive.zip *"
+                }
             }
         }
         
