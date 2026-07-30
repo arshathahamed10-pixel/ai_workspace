@@ -52,10 +52,11 @@ pipeline {
 
          stage('OWASP Dependency-Check') {
             steps {
+                bat 'mkdir reports'
                 dependencyCheck additionalArguments: '''
-                    -o "./"
+                    -o "./report"
                     -s "./"
-                    -f "ALL"
+                    -f "HTML"
                     --prettyPrint
                     --nvdApiKey ${NVD_API_KEY}
                     --data  ${NVD_DATA_DIR}
@@ -63,14 +64,7 @@ pipeline {
                 ''', odcInstallation: 'CVC scanner'
             }
         }
-
-       stage('Zip Report') {
-            steps {
-                dir("${APP_DIR}") {
-                    bat "tar -a -c -f dependency-check-report-${env.BUILD_NUMBER}.zip dependency-check-report.*"
-                }
-            }
-        }
+        
         stage('Archive Report') {
             steps {
                 archiveArtifacts artifacts: "${APP_DIR}/dependency-check-report-${env.BUILD_NUMBER}.zip",
