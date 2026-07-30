@@ -64,13 +64,12 @@ pipeline {
             }
         }
 
-          stage('Zip Report') {
+        stage('Zip Report') {
             steps {
                 dir("${APP_DIR}") {
-                    // zip is the built-in Jenkins Pipeline Utility Steps command
-                    zip zipFile: "dependency-check-report-${env.BUILD_NUMBER}.zip",
-                        archive: false,
-                        glob: 'dependency-check-report.*'
+                    powershell """
+                        Compress-Archive -Path dependency-check-report.* -DestinationPath dependency-check-report-${env.BUILD_NUMBER}.zip -Force
+                    """
                 }
             }
         }
