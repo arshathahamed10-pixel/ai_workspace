@@ -56,13 +56,13 @@ pipeline {
                 dependencyCheck additionalArguments: '''
                     -o "./report"
                     -s "./"
-                    -f "HTML"
+                    -f "ALL"
                     --prettyPrint
                     --nvdApiKey ${NVD_API_KEY}
                     --data  ${NVD_DATA_DIR}
                     --noupdate
                 ''', odcInstallation: 'CVC scanner'
-                bat 'cd foldername'
+                bat 'cd report'
                 bat 'tar -a -c -f ..\report.zip *'
 
             }
